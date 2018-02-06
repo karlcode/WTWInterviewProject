@@ -37,7 +37,7 @@ window.onload = function() {
 }
 
 function csvToArray(csv) {
-    var lines = csv.split("\n");
+    var lines=csv.split(/\r\n|\n|\r/);
     var result = [];
     //split first line into headers
     var headers = lines[0].split(",");
@@ -68,17 +68,15 @@ function parseArray(array){
         } else {
             cache[product] = cache[product];
         }
-        console.log(sortedArray[i]["Incremental Value"])
-        //if (sortedArray[i]['Origin Year'] == sortedArray[i]['Development Year']){
-           // cache.push(sortedArray[i][`"Incremental Value"`])
+        if (sortedArray[i]['Origin Year'] == sortedArray[i]['Development Year']){
+            cache.push(sortedArray[i][`"Incremental Value"`])
 
-        //} else {
-          //  cache.push(sortedArray[i]['Incremental Value'] + sortedArray[i-1]['Incremental Value'])
-        //}
+        } else {
+            cache.push(sortedArray[i]['Incremental Value'] + sortedArray[i-1]['Incremental Value'])
+        }
         
     }
     
-    console.log(cache)
-    console.log(sortedArray)
+    console.log(array)
 }
 
