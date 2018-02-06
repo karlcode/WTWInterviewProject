@@ -56,20 +56,32 @@ function csvToArray(csv) {
 
 function parseArray(array){
     var result = []
-    var cache = {}
-
+    var cache = []
+    var year = []
     for(var i = 0; i < array.length; i++){
+
+        //year array 
+        if (row['Origin Year']){
+            year.push(Number(row["Origin Year"]))
+        }
+        if (row['Development Year']){
+            year.push(Number(row["Development Year"]))
+        } 
+        var lowestYear = Math.min(...year)
+        var highestYear = Math.max(...year)
+
+
+        //product name in beginning
         var row = array[i]
         var product = row['Product']
-        if (!cache[product]){
-            cache[product] = {};
+        //filtering out rows with no product names
+        if (!cache[product] && product){
+            cache[product] = [product];
             result.push(cache[product])
         } else {
             cache[product] = cache[product];
         }
-        for (var k in row) {
-            cache[product][k] = row[k];
-        }
+        
     
     }
     console.log(result)
