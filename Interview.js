@@ -59,56 +59,20 @@ function parseArray(array){
     var cache = []
     var year = []
     for(var i = 0; i < array.length; i++){
-
-        //year array 
-        if (row['Origin Year']){
-            year.push(Number(row["Origin Year"]))
-        }
-        if (row['Development Year']){
-            year.push(Number(row["Development Year"]))
-        } 
-        var lowestYear = Math.min(...year)
-        var highestYear = Math.max(...year)
-
-
-        //product name in beginning
         var row = array[i]
         var product = row['Product']
-        //filtering out rows with no product names
         if (!cache[product] && product){
             cache[product] = [product];
-            result.push(cache[product])
         } else {
             cache[product] = cache[product];
         }
         
-    
-    }
-    console.log(result)
-}
-/*
-var array = convertedData.originYears + convertedData.developmentYears
-var lowestYear = array.min()
-var highestYear = array.max()
-var newData = []
-for (product in products){
-    //This ensures that there are no erroneous development year entries
-    if (developmentYear < originYear){
-        throw error('year cannot be earlier than origin')
-    }
-
-    //recursion?
-    for (var i = lowestYear; i < highestYear; i++ ){
-        if (i = developmentYear){
-            
-
-
-        }
-        else if (i < developmentYear){
-           
-        }
         
-
     }
+    var sortedArray = array.sort(function(a, b) {
+        return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
+      });
+      console.log(sortedArray)
+    
 }
-*/
+
