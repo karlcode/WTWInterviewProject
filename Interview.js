@@ -18,6 +18,29 @@ const csv = '/csv.file'
 
 var convertedData = csv.json()
 
+
+function csvParse(csv) {
+    var lines = csv.split("\n");
+
+    var result = [];
+    //split first line into headers
+    var headers = lines[0].split(",");
+    //for the proceeding lines i.e i=1
+    for (var i = 1; i < lines.length; i++) {
+      var obj = {};
+      var currentline = lines[i].split(",");
+
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentline[j];
+      }
+
+      result.push(obj);
+    }
+
+    return result;
+  }
+
+
 //hash table!!!!!!
 var array = convertedData.originYears + convertedData.developmentYears
 var lowestYear = array.min()
