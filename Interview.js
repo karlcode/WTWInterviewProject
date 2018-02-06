@@ -30,7 +30,7 @@ window.onload = function() {
             var text = event.target.result
             fileDisplayArea.innerHTML = text
             csvArray = csvToArray(text)
-            console.log(csvArray)
+            console.log(parseArray(csvArray))
         };
         
     })
@@ -51,8 +51,18 @@ function csvToArray(csv) {
       result.push(obj);
     }
     return result;
-  }
+}
 
+
+function parseArray(array){
+    var result = []
+    for(var i = 0; i < array.length; i++){
+        if (result.indexOf(array[i]['Product']) == -1){
+            result.push(array[i]['Product'])
+        }
+    console.log(result)
+    }
+}
 /*
 var array = convertedData.originYears + convertedData.developmentYears
 var lowestYear = array.min()
