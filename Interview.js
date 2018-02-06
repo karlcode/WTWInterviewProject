@@ -1,13 +1,4 @@
 /* csv 
-Product, Origin Year, Development Year, Incremental Value
-Comp, 1992, 1992, 110.0
-Comp, 1992, 1993, 170.0
-Comp, 1993, 1993, 200.0
-Non-Comp, 1990, 1990, 45.2
-Non-Comp, 1990, 1991, 64.8
-Non-Comp, 1990, 1993, 37.0
-*/
-
 considerations -- 
 -- duplicate entries per year
 -- year is a typo i.e 19900
@@ -15,9 +6,27 @@ considerations --
 -- development year is earlier than origin year
 const csv = '/csv.file'
 // convert csv to json first?
+*/
+var regex = new RegExp("(.*?)\.(csv)$");
 
-var convertedData = csv.json()
+function triggerValidation(el) {
+  if (!(regex.test(el.value.toLowerCase()))) {
+    el.value = '';
+    alert('Please select a .csv file');
+  }
+}
 
+window.onload = function() {
+    var fileInput = document.getElementById('fileInput');
+    var fileDisplayArea = document.getElementById('fileDisplayArea');
+
+    fileInput.addEventListener('change', function(e) {
+        var reader = new FileReader();
+    
+        reader.onload = function(e) {
+          var text = reader.result;
+    
+}
 
 function csvParse(csv) {
     var lines = csv.split("\n");
@@ -41,7 +50,7 @@ function csvParse(csv) {
   }
 
 
-//hash table!!!!!!
+/*
 var array = convertedData.originYears + convertedData.developmentYears
 var lowestYear = array.min()
 var highestYear = array.max()
@@ -55,14 +64,15 @@ for (product in products){
     //recursion?
     for (var i = lowestYear; i < highestYear; i++ ){
         if (i = developmentYear){
-            newData[i] =  
+            
 
 
         }
         else if (i < developmentYear){
-            newData[i] = 
+           
         }
         
 
     }
 }
+*/
