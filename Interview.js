@@ -55,24 +55,30 @@ function csvToArray(csv) {
 
 
 function parseArray(array){
-    var result = []
+    var sortedArray = array.sort((a, b) => {
+        return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
+      });
     var cache = []
-    var year = []
-    for(var i = 0; i < array.length; i++){
-        var row = array[i]
+    for(var i = 1; i < sortedArray.length; i++){
+        var row = sortedArray[i]
+        
         var product = row['Product']
         if (!cache[product] && product){
             cache[product] = [product];
         } else {
             cache[product] = cache[product];
         }
-        
+        console.log(sortedArray[i]["Incremental Value"])
+        //if (sortedArray[i]['Origin Year'] == sortedArray[i]['Development Year']){
+           // cache.push(sortedArray[i][`"Incremental Value"`])
+
+        //} else {
+          //  cache.push(sortedArray[i]['Incremental Value'] + sortedArray[i-1]['Incremental Value'])
+        //}
         
     }
-    var sortedArray = array.sort(function(a, b) {
-        return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
-      });
-      console.log(sortedArray)
     
+    console.log(cache)
+    console.log(sortedArray)
 }
 
