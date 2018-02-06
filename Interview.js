@@ -56,12 +56,23 @@ function csvToArray(csv) {
 
 function parseArray(array){
     var result = []
+    var cache = {}
+
     for(var i = 0; i < array.length; i++){
-        if (result.indexOf(array[i]['Product']) == -1){
-            result.push(array[i]['Product'])
+        var row = array[i]
+        var product = row['Product']
+        if (!cache[product]){
+            cache[product] = {};
+            result.push(cache[product])
+        } else {
+            cache[product] = cache[product];
         }
-    console.log(result)
+        for (var k in row) {
+            cache[product][k] = row[k];
+        }
+    
     }
+    console.log(result)
 }
 /*
 var array = convertedData.originYears + convertedData.developmentYears
