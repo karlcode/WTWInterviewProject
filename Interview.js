@@ -1,12 +1,12 @@
-/* csv 
+/* 
 considerations -- 
 -- duplicate entries per year
 -- year is a typo i.e 19900
 -- incremental value is negative
 -- development year is earlier than origin year
-const csv = '/csv.file'
-// convert csv to json first?
 */
+
+
 var regex = new RegExp("(.*?)\.(csv)$");
 
 function triggerValidation(el) {
@@ -21,10 +21,14 @@ window.onload = function() {
     var fileDisplayArea = document.getElementById('fileDisplayArea');
 
     fileInput.addEventListener('change', function(e) {
+        var file = fileInput.files[0];
         var reader = new FileReader();
-    
-        reader.onload = function(e) {
-          var text = reader.result;
+        reader.onload = function(event) {
+            var text = event.target.result
+            console.log(text)
+        };
+        reader.readAsText(file);
+    })
     
 }
 
@@ -49,6 +53,26 @@ function csvParse(csv) {
     return result;
   }
 
+  function csvParse2(csv) {
+    var lines = csv.split("\n");
+
+    var result = [];
+    //split first line into headers
+    var headers = lines[0].split(",");
+    //for the proceeding lines i.e i=1
+    for (var i = 1; i < lines.length; i++) {
+      var obj = {};
+      var currentline = lines[i].split(",");
+
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentline[j];
+      }
+
+      result.push(obj);
+    }
+
+    return result;
+  }
 
 /*
 var array = convertedData.originYears + convertedData.developmentYears
