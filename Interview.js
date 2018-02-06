@@ -19,15 +19,27 @@ const csv = '/csv.file'
 var convertedData = csv.json()
 
 //hash table!!!!!!
-
-var lowestYear = convertedData.array.floor()
-var highestYear = convertedData.array.max()
+var array = convertedData.originYears + convertedData.developmentYears
+var lowestYear = array.min()
+var highestYear = array.max()
+var newData = []
 for (product in products){
-    
-    for (var i = lowestYear; i< highestYear; i++ ){
+    //This ensures that there are no erroneous development year entries
+    if (developmentYear < originYear){
+        throw error('year cannot be earlier than origin')
+    }
+
+    //recursion?
+    for (var i = lowestYear; i < highestYear; i++ ){
         if (i = developmentYear){
-            //list all 3 incremental values
-            
+            newData[i] =  
+
+
         }
+        else if (i < developmentYear){
+            newData[i] = 
+        }
+        
+
     }
 }
