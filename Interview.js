@@ -7,9 +7,10 @@ considerations --
 */
 
 
-var regex = new RegExp("(.*?)\.(csv)$");
+
 
 function triggerValidation(el) {
+  var regex = new RegExp("(.*?)\.(csv)$");
   if (!(regex.test(el.value.toLowerCase()))) {
     el.value = '';
     alert('Please select a .csv file');
@@ -19,22 +20,24 @@ function triggerValidation(el) {
 window.onload = function() {
     var fileInput = document.getElementById('fileInput');
     var fileDisplayArea = document.getElementById('fileDisplayArea');
-
+    var csvArray = []
     fileInput.addEventListener('change', function(e) {
         var file = fileInput.files[0];
         var reader = new FileReader();
+
+        reader.readAsText(file);
         reader.onload = function(event) {
             var text = event.target.result
-            console.log(text)
+            fileDisplayArea.innerHTML = text
+            csvArray = csvToArray(text)
+            console.log(csvArray)
         };
-        reader.readAsText(file);
+        
     })
-    
 }
 
-function csvParse(csv) {
+function csvToArray(csv) {
     var lines = csv.split("\n");
-
     var result = [];
     //split first line into headers
     var headers = lines[0].split(",");
@@ -42,35 +45,11 @@ function csvParse(csv) {
     for (var i = 1; i < lines.length; i++) {
       var obj = {};
       var currentline = lines[i].split(",");
-
       for (var j = 0; j < headers.length; j++) {
         obj[headers[j]] = currentline[j];
       }
-
       result.push(obj);
     }
-
-    return result;
-  }
-
-  function csvParse2(csv) {
-    var lines = csv.split("\n");
-
-    var result = [];
-    //split first line into headers
-    var headers = lines[0].split(",");
-    //for the proceeding lines i.e i=1
-    for (var i = 1; i < lines.length; i++) {
-      var obj = {};
-      var currentline = lines[i].split(",");
-
-      for (var j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentline[j];
-      }
-
-      result.push(obj);
-    }
-
     return result;
   }
 
