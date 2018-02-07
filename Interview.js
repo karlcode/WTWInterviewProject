@@ -62,13 +62,14 @@ function parseArray(array){
     var sortedArray = array.sort((a, b) => {
         return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
         })
-        console.log(sortedArray);
     var lowestYear = sortedArray[0]['Origin Year']
     var highestYear = sortedArray[sortedArray.length - 1]['Origin Year']
-    
-    var cache = {}
+    const uniqueProduct = [...new Set(sortedArray.map(key => key['Product']))];
     var sum = 0
-    var previous_product = '';
+    var cache = uniqueProduct.reduce((obj, v) => {
+        obj[v] = []
+        return obj
+    }, {})
 
     for (var i = 0; i < sortedArray.length; i++){
         var yearIndex = sortedArray[i]['Development Year'] - sortedArray[i]['Origin Year']
@@ -78,14 +79,18 @@ function parseArray(array){
         } else {
             cache[product] = cache[product];
         }
+        
         for (var j = lowestYear; j <= highestYear; j++){
             if (sortedArray[i]['Origin Year'] == j ){
                 cache[product][sortedArray[i]['Origin Year']] = [sortedArray[i]['Incremental Value']]
             }
         }
         
+        
     }
     console.log(cache);
+    console.log(sortedArray);
+
 }
 
 
