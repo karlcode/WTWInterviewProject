@@ -56,30 +56,35 @@ function csvToArray(csv) {
 
 function parseArray(array){
     var sortedArray = array.sort((a, b) => {
-        return a['Product'] - b['Product']  || a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
-      })
+        return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
+        })
 
-    var cache = []
-    for(var i = 0; i < sortedArray.length; i++){
+    var cache = {}
+    var sum = 0
+    var previous_product = null;
+    for (var i = 0; i < sortedArray.length; i++){
         var row = sortedArray[i]
+        var current_product = sortedArray[i]['Product']
         var product = row['Product']
-        if (!cache[product] && product){
-            cache[product] = [product];
+        if (!cache[product]){
+            cache[product] = []
+            if (current_product = previous_product){
+                sum += +sortedArray[i]['Incremental Value']
+            } else {
+                sum = +sortedArray[i]['Incremental Value']
+            }
         } else {
             cache[product] = cache[product];
         }
-        if(product){
-            if (sortedArray[i]['Origin Year'] == sortedArray[i]['Development Year']){
-                cache.push(+sortedArray[i]['Incremental Value'])
-    
-            } else {
-                cache.push(+sortedArray[i]['Incremental Value'] + +sortedArray[i-1]['Incremental Value'])
-            }
-        }
-        
-        
+        current_product = previous_product
+        console.log(cache);
+        console.log(sum);
     }
     console.log(sortedArray);
-    console.log(cache);
 }
-
+/*
+if (!cache[product] && product){
+    cache[product] = [product];
+} else {
+    cache[product] = cache[product];
+}*/
