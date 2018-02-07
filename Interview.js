@@ -76,19 +76,27 @@ function parseArray(array){
     
 
     for (var i = 0; i < sortedArray.length; i++){
-        var yearIndex = sortedArray[i]['Development Year'] - sortedArray[i]['Origin Year']
-        var product = sortedArray[i]['Product']
-        var origin = sortedArray[i]['Origin Year']
-        var increment = sortedArray[i]['Incremental Value']
+        var row = sortedArray[i]
+        var yearIndex = row['Development Year'] - row['Origin Year']
+        var product = row['Product']
+        var origin = row['Origin Year']
+        var increment = row['Incremental Value']
         for (var j = 0; j < uniqueProduct.length; j++){
-            if(uniqueProduct[j] == product){
+            if (uniqueProduct[j] == product){
                 cache[uniqueProduct[j]][origin][yearIndex] = increment
             } else {
                 cache[uniqueProduct[j]][origin][yearIndex] = 0
-            }    
+            }
         }
-        if (yearIndex > 0){
-            cache[product][origin][yearIndex] += cache[product][origin][yearIndex-1]
+        var num = 1
+        while (num < yearIndex){
+            
+            if (!cache[product][origin][num]){
+                cache[product][origin][num] = cache[product][origin][num - 1]
+            }
+            num++
+            
+            
         } 
         
     }
