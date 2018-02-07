@@ -45,7 +45,11 @@ function csvToArray(csv) {
       var currentline = lines[i].split(",");
       for (var j in headers){
         if (currentline[j]) {
-            obj[headers[j]] = currentline[j];
+            if(currentline[j].match(/[a-z]/i)){
+                obj[headers[j]] = currentline[j]
+            } else {
+                obj[headers[j]] = parseFloat(currentline[j]);
+            } 
         }
       }
       result.push(obj);
@@ -58,33 +62,59 @@ function parseArray(array){
     var sortedArray = array.sort((a, b) => {
         return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
         })
-
+        console.log(sortedArray);
+    var lowestYear = sortedArray[0]['Origin Year']
+    var highestYear = sortedArray[sortedArray.length - 1]['Origin Year']
+    
     var cache = {}
     var sum = 0
-    var previous_product = null;
+    var previous_product = '';
+
     for (var i = 0; i < sortedArray.length; i++){
-        var row = sortedArray[i]
-        var current_product = sortedArray[i]['Product']
-        var product = row['Product']
+        var yearIndex = sortedArray[i]['Development Year'] - sortedArray[i]['Origin Year']
+        var product = sortedArray[i]['Product']
         if (!cache[product]){
-            cache[product] = []
-            if (current_product = previous_product){
-                sum += +sortedArray[i]['Incremental Value']
-            } else {
-                sum = +sortedArray[i]['Incremental Value']
-            }
+            cache[product] = {}
         } else {
             cache[product] = cache[product];
         }
-        current_product = previous_product
-        console.log(cache);
+        for (var j = lowestYear; j <= highestYear; j++){
+            if (sortedArray[i]['Origin Year'] == j ){
+                cache[product][sortedArray[i]['Origin Year']] = [sortedArray[i]['Incremental Value']]
+            }
+        }
+        
+    }
+    console.log(cache);
+}
+
+
+
+
+function parseArray2(array){
+    var sortedArray = array.sort((a, b) => {
+        return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
+        })
+
+    var cache = {}
+    var sum = 0
+    var previous_product = '';
+    for (var i = 0; i < sortedArray.length; i++){
+        var row = sortedArray[i];
+        var current_product = sortedArray[i]['Product'];
+        var product = row['Product']
+        if (!cache[product]){
+            cache[product] = []
+            
+        } else {
+            cache[product] = cache[product];
+        }
+        if (previous_product = current_product){
+            sum += 2;
+        } else {
+            sum = "Doesnt equal previous product"
+        }
+        previous_product = current_product
         console.log(sum);
     }
-    console.log(sortedArray);
 }
-/*
-if (!cache[product] && product){
-    cache[product] = [product];
-} else {
-    cache[product] = cache[product];
-}*/
