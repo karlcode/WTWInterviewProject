@@ -73,14 +73,26 @@ function parseArray(array){
           }
         return obj
     }, {})
-    console.log(cache);
+    
 
     for (var i = 0; i < sortedArray.length; i++){
         var yearIndex = sortedArray[i]['Development Year'] - sortedArray[i]['Origin Year']
         var product = sortedArray[i]['Product']
-        cache[product][sortedArray[i]['Origin Year']][yearIndex] = sortedArray[i]['Incremental Value']
+        var origin = sortedArray[i]['Origin Year']
+        var increment = sortedArray[i]['Incremental Value']
+        for (var j = 0; j < uniqueProduct.length; j++){
+            if(uniqueProduct[j] == product){
+                cache[uniqueProduct[j]][origin][yearIndex] = increment
+            } else {
+                cache[uniqueProduct[j]][origin][yearIndex] = 0
+            }    
+        }
+        if (yearIndex > 0){
+            cache[product][origin][yearIndex] += cache[product][origin][yearIndex-1]
+        } 
+        
     }
-    
+    console.log(cache);
     console.log(sortedArray);
 
 }
