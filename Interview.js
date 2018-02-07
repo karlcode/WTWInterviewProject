@@ -24,29 +24,29 @@ window.onload = function() {
     fileInput.addEventListener('change', function(e) {
         var file = fileInput.files[0];
         var reader = new FileReader();
-
-        reader.readAsText(file);
         reader.onload = function(event) {
             var text = event.target.result
             fileDisplayArea.innerHTML = text
             csvArray = csvToArray(text)
             console.log(parseArray(csvArray))
         };
-        
+        reader.readAsText(file);
     })
 }
 
 function csvToArray(csv) {
-    var lines=csv.split(/\r\n|\n|\r/);
+    var lines = csv.split(/\r\n|\n|\r/);
     var result = [];
     //split first line into headers
     var headers = lines[0].split(",");
     //for the proceeding lines i.e i=1
-    for (var i = 1; i < lines.length; i++) {
+    for (var i = 1; i < lines.length - 1; i++) {
       var obj = {};
       var currentline = lines[i].split(",");
-      for (var j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentline[j];
+      for (var j in headers){
+        if (currentline[j]) {
+            obj[headers[j]] = currentline[j];
+        }
       }
       result.push(obj);
     }
@@ -56,27 +56,30 @@ function csvToArray(csv) {
 
 function parseArray(array){
     var sortedArray = array.sort((a, b) => {
-        return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
-      });
+        return a['Product'] - b['Product']  || a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
+      })
+
     var cache = []
-    for(var i = 1; i < sortedArray.length; i++){
+    for(var i = 0; i < sortedArray.length; i++){
         var row = sortedArray[i]
-        
         var product = row['Product']
         if (!cache[product] && product){
             cache[product] = [product];
         } else {
             cache[product] = cache[product];
         }
-        if (sortedArray[i]['Origin Year'] == sortedArray[i]['Development Year']){
-            cache.push(sortedArray[i][`"Incremental Value"`])
-
-        } else {
-            cache.push(sortedArray[i]['Incremental Value'] + sortedArray[i-1]['Incremental Value'])
+        if(product){
+            if (sortedArray[i]['Origin Year'] == sortedArray[i]['Development Year']){
+                cache.push(+sortedArray[i]['Incremental Value'])
+    
+            } else {
+                cache.push(+sortedArray[i]['Incremental Value'] + +sortedArray[i-1]['Incremental Value'])
+            }
         }
         
+        
     }
-    
-    console.log(array)
+    console.log(sortedArray);
+    console.log(cache);
 }
 
