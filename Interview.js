@@ -73,7 +73,6 @@ function parseArray(array){
           }
         return obj
     }, {})
-    
 
     for (var i = 0; i < sortedArray.length; i++){
         var row = sortedArray[i]
@@ -87,21 +86,32 @@ function parseArray(array){
             } else {
                 cache[uniqueProduct[j]][origin][yearIndex] = 0
             }
-        }
-        var num = 1
-        while (num < yearIndex){
-            
-            if (!cache[product][origin][num]){
-                cache[product][origin][num] = cache[product][origin][num - 1]
-            }
-            num++
-            
-            
-        } 
-        
+        }  
     }
+    for (key in cache){
+        for (year in cache[key]){
+            for (var y = 0; y < cache[key][year].length; y++){
+                var index = cache[key][year]
+                if (typeof index[y] == 'undefined'){ 
+                    index[y] = index[y-1]
+                } else if ( index[y] < index[y-1]) {
+                    index[y] += index[y-1]
+                }
+            }
+        }
+    }  
     console.log(cache);
     console.log(sortedArray);
-
 }
-
+/*()
+var num = 1
+while (num < yearIndex + 1 ){
+            
+    if (!cache[product][origin][num]){
+        cache[product][origin][num] = cache[product][origin][num - 1]
+        cache[product][origin][num]
+    }
+    num++
+    
+    
+} */
