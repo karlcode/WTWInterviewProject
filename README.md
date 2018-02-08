@@ -1,5 +1,7 @@
 # WTWInterviewProject
 
+To run, clone repository and open index.html in browser of choice. 
+
 Attempt at writing client-side .csv parser for claims triangles in Javascript. 
 
 I did my best to not use any external libraries and try to construct an implementation from the language tools itself. This came at the cost of code legibility & clarity as I was unsure of how to derive the solution via best practices. 
