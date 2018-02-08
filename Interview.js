@@ -47,23 +47,23 @@ function csvToArray(csv) {
     }
     result.push(obj);
   }
-  parseArray(result)
+  transformArray(result)
 }
 
-function parseArray(array){
+function transformArray(array){
   let sortedArray = array.sort((a, b) => {
     return a['Origin Year'] - b['Origin Year']  ||  a['Development Year']- b['Development Year'];
     })
   let lowestYear = sortedArray[0]['Origin Year']
   let highestYear = sortedArray[sortedArray.length - 1]['Origin Year']
   const uniqueProduct = [...new Set(sortedArray.map(key => key['Product']))];
-  let cache = uniqueProduct.reduce((obj, v) => {
-    obj[v] = {}
-    let ref = obj[v]
+  let cache = uniqueProduct.reduce((element, p) => {
+    element[p] = {}
+    let ref = element[p]
     for (let x = lowestYear; x <= highestYear; x++) {
       ref[x] = [];
       }
-    return obj
+    return element
   }, {})
 
   for (let i = 0; i < sortedArray.length; i++){
