@@ -1,6 +1,6 @@
 # WTWInterviewProject
 
-To run, clone repository and open index.html in browser of choice. 
+>To run, clone repository and open index.html in browser of choice. 
 
 Attempt at writing client-side .csv parser for claims triangles in Javascript. 
 
