@@ -17,23 +17,22 @@ function triggerValidation(el) {
   }
 }
 
-window.onload = function() {
+window.onload = () => {
   let fileInput = document.getElementById('fileInput');
   let fileDisplayArea = document.getElementById('fileDisplayArea');
-  let csvArray = []
+  let reader = new FileReader();
   fileInput.addEventListener('change', (e) => {
     let file = fileInput.files[0];
-    let reader = new FileReader();
     reader.onload = function(event) {
       let text = event.target.result
       fileDisplayArea.innerHTML = text
-      csvArray = csvToArray(text)
-      let parsedArray = parseArray(csvArray)
-      convertToCSV(parsedArray)
+      csvToArray(text)
     };
     reader.readAsText(file);
   })
+  
 }
+
 
 function csvToArray(csv) {
   let lines = csv.split(/\r\n|\n|\r/);
@@ -53,7 +52,7 @@ function csvToArray(csv) {
     }
     result.push(obj);
   }
-  return result;
+  parseArray(result)
 }
 
 
@@ -99,7 +98,7 @@ function parseArray(array){
       }
     }
   }  
-  return cache
+  convertToCSV(cache)
 }
 
 function convertToCSV(objArray) {
@@ -122,6 +121,26 @@ function convertToCSV(objArray) {
   }
   parsedData.unshift([firstYear, lastYear - firstYear + 1])
   parsedData = parsedData.join('\r\n')
-  console.log(parsedData);
+ 
+  download(parsedData, 'download.csv', 'text/csv;encoding:utf-8');
+}
 
+function download (content, fileName, mimeType) {
+  var a = document.createElement('a');
+  mimeType = mimeType || 'application/octet-stream';
+  if (navigator.msSaveBlob) {
+    navigator.msSaveBlob(new Blob([content], {
+      type: mimeType
+    }), fileName);
+  } else if (URL && 'download' in a) { 
+    a.href = URL.createObjectURL(new Blob([content], {
+      type: mimeType
+    }));
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+  }
 }
