@@ -5,10 +5,6 @@ considerations --
 -- incremental value is negative
 -- development year is earlier than origin year
 */
-
-
-
-
 function triggerValidation(el) {
   let regex = new RegExp("(.*?)\.(csv)$");
   if (!(regex.test(el.value.toLowerCase()))) {
@@ -33,7 +29,6 @@ window.onload = () => {
   
 }
 
-
 function csvToArray(csv) {
   let lines = csv.split(/\r\n|\n|\r/);
   let result = [];
@@ -54,7 +49,6 @@ function csvToArray(csv) {
   }
   parseArray(result)
 }
-
 
 function parseArray(array){
   let sortedArray = array.sort((a, b) => {
@@ -121,12 +115,16 @@ function convertToCSV(objArray) {
   }
   parsedData.unshift([firstYear, lastYear - firstYear + 1])
   parsedData = parsedData.join('\r\n')
- 
+
+  let pre = document.createElement("PRE");
+  pre.innerHTML = parsedData
+  document.body.appendChild(pre);
+
   download(parsedData, 'download.csv', 'text/csv;encoding:utf-8');
 }
 
 function download (content, fileName, mimeType) {
-  var a = document.createElement('a');
+  let a = document.createElement('a');
   mimeType = mimeType || 'application/octet-stream';
   if (navigator.msSaveBlob) {
     navigator.msSaveBlob(new Blob([content], {
@@ -141,6 +139,6 @@ function download (content, fileName, mimeType) {
     a.click();
     document.body.removeChild(a);
   } else {
-    location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+    location.href = 'data:application/octet-stream,' + encodeURIComponent(content);
   }
 }
